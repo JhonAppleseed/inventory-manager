@@ -10,7 +10,10 @@ class Item;
 class Inventory {
   private:
     vector<Item> items;  
-  public:  
+  public:
+    int getSize(){
+      return items.size();
+    }
     void addItem();
     void removeItem();
     void displayItems();
@@ -62,43 +65,36 @@ void Inventory::addItem(){
 }
 
 void Inventory::displayItems(){
-  if (items.empty()){
-    cout << "Items is empty.." << endl;
-    return;
-  }
-  for (Item& item : items){
-    cout << item.getName() << endl;
-    cout << item.getQuant() << endl;
-    cout << item.getPrice() << endl;
-    cout << "" << endl;
-  }
-}
-
-void Inventory::removeItem(){
-  cout << "Remove item" << endl << endl;
-  cout << "Items: " << endl;
+  cout << "Items" << endl << endl;
+  cout << "name," << "quantity," << "price" << endl;
   int counter = 1;
-  int removeIndex;
-  int removeQuant;
-    cout << "name," << "quantity," << "price" << endl;
   for (auto it = items.begin(); it != items.end(); ++it){
     cout << counter << ". ";
     cout << it->getName() << "," << it->getQuant() << "," << it->getPrice() << "\n";
     counter++;
   }
+}
+
+void Inventory::removeItem(){
+  cout << "Remove item" << endl << endl;
+  int removeIndex;
+  int removeQuant;
+  displayItems();
+  cout << "Size: " <<  getSize() << endl;;
+  cout << "Delete item by index" << endl;
   cout << "->: ";
   cin >> removeIndex;
-  cout << "Removing Item: " << items.at(removeIndex -1).getName() << endl;
-  if (!(1 < removeIndex || removeIndex > items.size())){
+  cout << "RemoveIndex: " << removeIndex << endl;
+  if (removeIndex < 1 || removeIndex > getSize()){
     return;
   }
-  cout << "How many would you like to remove - 0-" << items.at(removeIndex-1).getQuant() << endl;
+  cout << "Removing Item: " << items.at(removeIndex - 1).getName() << endl;
+  cout << "How many would you like to remove: 0-" << items.at(removeIndex-1).getQuant() << endl;
   cout << "->: ";
   cin >> removeQuant;
   cout << "Removing " << removeQuant << endl;
-  // (removeIndex - 1) is item position
+  items.erase(items.begin() + (removeIndex-1));
 }
-
 
 int work_loop(){
   Inventory workinv; // DECLARING INVENTORY IN WORK LOOP
