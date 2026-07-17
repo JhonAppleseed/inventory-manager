@@ -70,11 +70,10 @@ void Inventory::addItem(){
 
 void Inventory::displayItems(){
   cout << "Items" << endl << endl;
-  cout << "name," << "quantity," << "price" << endl;
+  cout << "index," <<  "name," << "quantity," << "price" << endl;
   int counter = 1;
   for (auto it = items.begin(); it != items.end(); ++it){
-    cout << counter << ". ";
-    cout << it->getName() << "," << it->getQuant() << "," << it->getPrice() << "\n";
+    cout << counter << "," << it->getName() << "," << it->getQuant() << "," << it->getPrice() << endl;
     counter++;
   }
 }
@@ -84,24 +83,23 @@ void Inventory::removeItem(){
   int removeIndex;
   int removeQuant;
   displayItems();
-  cout << "Size: " <<  getSize() << endl;;
+  cout << "Vector length: " <<  getSize() << endl; //DB LINE
   cout << "Delete item by index" << endl;
   cout << "->: ";
   cin >> removeIndex;
-  cout << "RemoveIndex: " << removeIndex << endl;
   if (removeIndex < 1 || removeIndex > getSize()){
+    cout << "Item not found.." << endl;
     return;
   }
-  cout << "Removing Item: " << items.at(removeIndex - 1).getName() << endl;
+  cout << "Removing Item: " << items.at(removeIndex-1).getName() << endl;
   cout << "How many would you like to remove: 0-" << items.at(removeIndex-1).getQuant() << endl;
   cout << "->: ";
   cin >> removeQuant;
-  cout << "Removing " << removeQuant << endl;
-  cout << "Amount at removing index." << items.at(removeIndex-1).getQuant() << endl;
+  cout << "Removing " << removeQuant << " " << items.at(removeIndex-1).getName() << endl;
   if (removeQuant == items.at(removeIndex-1).getQuant()){
     items.erase(items.begin() + (removeIndex-1));
   } else {
-   items.at(removeIndex-1).decQuant(removeQuant);
+    items.at(removeIndex-1).decQuant(removeQuant);
   }
 }
 
