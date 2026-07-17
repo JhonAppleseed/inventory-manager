@@ -35,6 +35,10 @@ class Item {
       price = z;
     }
 
+    void decQuant(int amount){
+      quant -= amount;
+    }
+
     string getName(){
       return name;
     }
@@ -93,7 +97,12 @@ void Inventory::removeItem(){
   cout << "->: ";
   cin >> removeQuant;
   cout << "Removing " << removeQuant << endl;
-  items.erase(items.begin() + (removeIndex-1));
+  cout << "Amount at removing index." << items.at(removeIndex-1).getQuant() << endl;
+  if (removeQuant == items.at(removeIndex-1).getQuant()){
+    items.erase(items.begin() + (removeIndex-1));
+  } else {
+   items.at(removeIndex-1).decQuant(removeQuant);
+  }
 }
 
 int work_loop(){
