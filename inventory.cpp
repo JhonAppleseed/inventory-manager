@@ -1,7 +1,10 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <algorithm>
 #include <vector>
+#include <sstream>
+#include <iomanip>
 using namespace std;
 // INVENTORY MANAGER
 
@@ -17,9 +20,8 @@ class Inventory {
     void addItem();
     void removeItem();
     void displayItems();
-    vector<Item> getItems(){
-      return items;
-    }
+    void saveToFile();
+    vector<Item> getItems(){return items;}
 };
 
 class Item {
@@ -101,6 +103,49 @@ void Inventory::removeItem(){
   } else {
     items.at(removeIndex-1).decQuant(removeQuant);
   }
+  return;
+}
+
+
+void Inventory::saveToFile(){
+  string filename;
+  string content;
+  cout << "Saving to file" << "\n\n";
+
+  auto getSuffix = [](string filename){
+    string suffix;
+    for (int i = (filename.length()-1); i > (filename.length()-5); --i){
+    	suffix += filename[i];
+    }
+    reverse(suffix.begin(), suffix.end());
+    return suffix; 
+  };
+
+  do {
+    cout << "Enter filename (.txt)" << endl;
+    cout << "->: ";
+    cin >> filename;
+  } while (getSuffix(filename) != ".txt");
+
+  if (items.empty()){
+    cout << "Nothing to save" << endl;
+    return;
+  }
+
+  ofstream TextFile(filename);
+
+
+  for (auto it = items.begin(); it != items.end(); ++it){
+    content += it->getName() + "," + to_string(it->getPrice()) + "," + to_string(it->getQuant()) + "\n";
+  }
+
+  cout << content << endl;
+
+  TextFile << content;
+
+  TextFile.close();
+  items.clear();
+  return;
 }
 
 int work_loop(){
@@ -136,8 +181,8 @@ int work_loop(){
         //workinv.sortItems();
         break;
       case 5:
+        workinv.saveToFile();
         break;
-        //workinv.saveToFile();
       case 6:
         //workinv.loadFromFile();
         break;
